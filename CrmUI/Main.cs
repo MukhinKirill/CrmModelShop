@@ -20,14 +20,14 @@ namespace CrmUI
             db = new CrmContext();
         }
 
-        private void sellerToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SellerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var catalogSeller = new Catalog<Seller>(db.Sellers);
+            var catalogSeller = new Catalog<Seller>(db.Sellers, db);
             catalogSeller.Show();
         }
-        private void customerToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CustomerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var catalogCustomer = new Catalog<Customer>(db.Customers);
+            var catalogCustomer = new Catalog<Customer>(db.Customers, db);
             catalogCustomer.Show();
         }
         private void CustomerAddToolStripMenuItem_Click(object sender, EventArgs e)
@@ -40,19 +40,19 @@ namespace CrmUI
             }
         }
 
-        private void checkToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CheckToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var catalogCheck = new Catalog<Check>(db.Checks);
+            var catalogCheck = new Catalog<Check>(db.Checks, db);
             catalogCheck.Show();
         }
 
-        private void productToolStripMenuItem_Click_1(object sender, EventArgs e)
+        private void ProductToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            var catalogProduct = new Catalog<Product>(db.Products);
+            var catalogProduct = new Catalog<Product>(db.Products, db);
             catalogProduct.Show();
         }
 
-        private void sellerAddToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void SellerAddToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             var form = new SellerForm();
             if (form.ShowDialog() == DialogResult.OK)//если результат ОК то заходим в условие
@@ -62,7 +62,7 @@ namespace CrmUI
             }
         }
 
-        private void addToolStripMenuItem_Click(object sender, EventArgs e)
+        private void AddToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var form = new ProductForm();
             if (form.ShowDialog() == DialogResult.OK)//если результат ОК то заходим в условие
