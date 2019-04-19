@@ -10,7 +10,10 @@ namespace CrmBl.Model
     {
         Generator generator = new Generator();
         Random rnd = new Random();
-        bool IsWorking = false;
+
+        CancellationTokenSource cancellationTokenSource;
+        CancellationToken token;
+        List<Task> tasks = new List<Task>();
         public List<CashDesk> CashDesks { get; set; } = new List<CashDesk>();
         public List<Cart> Carts { get; set; } = new List<Cart>();
         public List<Check> Checks { get; set; } = new List<Check>();
@@ -24,53 +27,59 @@ namespace CrmBl.Model
             generator.GetNewProducts(1000);
             generator.GetNewCustomers(100);
 
+            cancellationTokenSource = new CancellationTokenSource();
+            token = cancellationTokenSource.Token;
             foreach (var seller in sellers)
             {
                 Sellers.Enqueue(seller);
             }
             for (int i = 0; i < 3; i++)
             {
-                CashDesks.Add(new CashDesk(CashDesks.Count, Sellers.Dequeue()));
+                CashDesks.Add(new CashDesk(CashDesks.Count, Sellers.Dequeue(), null));
             }
         }
         //public async void Start()
         public void Start()
         {
-            IsWorking = true;
-            Task.Run(() => CreateCarts(10, CustomerSpeed));
+        
+
+
+            tasks.Add(Task.Run(() => CreateCarts(10, token)));
+            
             //await Task.Run(() => CreateCarts(10,1000)); 
             // если будут await/async выполнение метода будет останавливаться  на данном этапе и ждать выполнения метода в отдельном аснхронном потоке
             //т.е. основной поток будет ждать выполнения Task'a
             // Пример: мб использовано при работе с графическим интерфейсом, чтобы форма не зависала на время ожидания работы порожденого потока
             // форма не будет активна, но и не будет висеть мертвым грузом
 
-            var cashDeskTasks = CashDesks.Select(c => new Task(() => CashDeskWork(c, CashDeskSpeed)));
+            var cashDeskTasks = CashDesks.Select(c => new Task(() => CashDeskWork(c, token)));
             foreach (var task in cashDeskTasks)
             {
                 task.Start();
             }
+            tasks.AddRange(cashDeskTasks);
         }
 
         public void Stop()
         {
-            IsWorking = false;
+            cancellationTokenSource.Cancel();
         }
 
-        private void CashDeskWork(CashDesk cashDesk, int sleep)
+        private void CashDeskWork(CashDesk cashDesk, CancellationToken token)
         {
-            while (IsWorking)
+            while (!token.IsCancellationRequested)
             {
                 if (cashDesk.Count > 0)
                 {
                     cashDesk.Dequeue();
-                    Thread.Sleep(sleep);
+                    Thread.Sleep(CashDeskSpeed);
                 }
             }
         }
 
-        private void CreateCarts(int customerCounts, int sleep)
+        private void CreateCarts(int customerCounts, CancellationToken token)
         {
-            while (IsWorking)
+            while (!token.IsCancellationRequested)
             {
 
                 var customers = generator.GetNewCustomers(10);
@@ -86,7 +95,7 @@ namespace CrmBl.Model
                     var cash = CashDesks[rnd.Next(CashDesks.Count)];
                     cash.Enqueue(cart);
                 }
-                Thread.Sleep(sleep);
+                Thread.Sleep(CustomerSpeed);
             }
         }
     }

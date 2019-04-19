@@ -6,7 +6,7 @@ namespace CrmBl.Model
 {
     public class CashDesk // virtual object. Don't will save in BD
     {
-        CrmContext db = new CrmContext();
+        CrmContext db;
         public int Number { get; set; }
         public Seller Seller { get; set; }
         public Queue<Cart> Queue { get; set; }
@@ -15,17 +15,18 @@ namespace CrmBl.Model
         public bool IsModel { get; set; }
         public int Count => Queue.Count;
         public event EventHandler<Check> CheckClosed;
-        public CashDesk(int number, Seller seller)
+        public CashDesk(int number, Seller seller, CrmContext db)
         {
             Seller = seller;
             Number = number;
             Queue = new Queue<Cart>();
             IsModel = true;
             MaxQueueLenght = 10;
+            this.db = db ?? new CrmContext(); 
         }
         public void Enqueue(Cart cart)
         {
-            if(Queue.Count <= MaxQueueLenght)
+            if(Queue.Count < MaxQueueLenght)
             {
                 Queue.Enqueue(cart);
             }

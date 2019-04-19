@@ -12,7 +12,7 @@ namespace CrmBl.Model
         public virtual ICollection<Sell> Sells { get; set; }
         public override string ToString()
         {
-            return Name;
+            return Name+ " - "+Price ;
         }
 
         public override int GetHashCode()
@@ -22,9 +22,9 @@ namespace CrmBl.Model
         public override bool Equals(object obj)
         {
             if (obj is Product product)
-            { 
-            return ProductId.Equals(product.ProductId);
-        }
+            {
+                return ProductId.Equals(product.ProductId);
+            }
             return false;
         }
     }

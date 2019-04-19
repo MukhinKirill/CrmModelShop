@@ -57,7 +57,7 @@ namespace CrmBl.Model.Tests
                 product2,
                 product2
             };
-            var cashDesk = new CashDesk(1, seller);
+            var cashDesk = new CashDesk(1, seller, null);
             cashDesk.MaxQueueLenght = 10;
             cashDesk.Enqueue(cart1);
             cashDesk.Enqueue(cart2);

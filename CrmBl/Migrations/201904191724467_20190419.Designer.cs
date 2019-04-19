@@ -7,13 +7,13 @@ namespace CrmBl.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class AddGroupType : IMigrationMetadata
+    public sealed partial class _20190419 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddGroupType));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(_20190419));
         
         string IMigrationMetadata.Id
         {
-            get { return "201904151801427_AddGroupType"; }
+            get { return "201904191724467_20190419"; }
         }
         
         string IMigrationMetadata.Source

@@ -25,7 +25,7 @@ namespace CrmUI
             LeaveCustomersCount = new Label();
 
             CashDeskName.AutoSize = true;
-            CashDeskName.Location = new System.Drawing.Point(x, y+2);
+            CashDeskName.Location = new System.Drawing.Point(x, y + 2);
             CashDeskName.Name = "CashDeskName" + number;
             CashDeskName.Size = new System.Drawing.Size(35, 13);
             CashDeskName.TabIndex = number;
@@ -36,8 +36,7 @@ namespace CrmUI
             Price.Size = new System.Drawing.Size(120, 20);
             Price.TabIndex = number;
             Price.Maximum = 100000000000000000;
-            cashDesk.CheckClosed += CashDesk_CheckClosed;
-        
+
             QueueLenght.Location = new System.Drawing.Point(x + 250, y);
             QueueLenght.Maximum = cashDesk.MaxQueueLenght;
             QueueLenght.Name = "QueueLenght" + number;
@@ -51,11 +50,13 @@ namespace CrmUI
             LeaveCustomersCount.Size = new System.Drawing.Size(35, 13);
             LeaveCustomersCount.TabIndex = number;
             LeaveCustomersCount.Text = "";
+
+            cashDesk.CheckClosed += CashDesk_CheckClosed;
         }
 
         private void CashDesk_CheckClosed(object sender, Check e)//надо обновляться и обновляться в том же потоке
         {
-            Price.Invoke((Action)delegate 
+            Price.Invoke((Action)delegate
             {
                 Price.Value += e.Price;
                 QueueLenght.Value = cashDesk.Count;

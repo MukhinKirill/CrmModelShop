@@ -48,9 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\201904151801427_AddGroupType.cs" />
-    <Compile Include="Migrations\201904151801427_AddGroupType.Designer.cs">
-      <DependentUpon>201904151801427_AddGroupType.cs</DependentUpon>
+    <Compile Include="Migrations\201904191724467_20190419.cs" />
+    <Compile Include="Migrations\201904191724467_20190419.Designer.cs">
+      <DependentUpon>201904191724467_20190419.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Model\Cart.cs" />
@@ -70,8 +70,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201904151801427_AddGroupType.resx">
-      <DependentUpon>201904151801427_AddGroupType.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201904191724467_20190419.resx">
+      <DependentUpon>201904191724467_20190419.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
