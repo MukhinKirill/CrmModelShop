@@ -16,6 +16,8 @@ namespace CrmBl.Model
         public List<Check> Checks { get; set; } = new List<Check>();
         public List<Sell> Sells { get; set; } = new List<Sell>();
         public Queue<Seller> Sellers { get; set; } = new Queue<Seller>();
+        public int CustomerSpeed { get; set; } = 100;
+        public int CashDeskSpeed { get; set; } = 100;
         public ShopComputerModel()
         {
             var sellers = generator.GetNewSellers(20);
@@ -35,14 +37,14 @@ namespace CrmBl.Model
         public void Start()
         {
             IsWorking = true;
-            Task.Run(() => CreateCarts(10, 1000));
+            Task.Run(() => CreateCarts(10, CustomerSpeed));
             //await Task.Run(() => CreateCarts(10,1000)); 
             // если будут await/async выполнение метода будет останавливаться  на данном этапе и ждать выполнения метода в отдельном аснхронном потоке
             //т.е. основной поток будет ждать выполнения Task'a
             // Пример: мб использовано при работе с графическим интерфейсом, чтобы форма не зависала на время ожидания работы порожденого потока
             // форма не будет активна, но и не будет висеть мертвым грузом
 
-            var cashDeskTasks = CashDesks.Select(c => new Task(() => CashDeskWork(c, 1000)));
+            var cashDeskTasks = CashDesks.Select(c => new Task(() => CashDeskWork(c, CashDeskSpeed)));
             foreach (var task in cashDeskTasks)
             {
                 task.Start();
@@ -81,7 +83,7 @@ namespace CrmBl.Model
                     {
                         cart.Add(product);
                     }
-                    var cash = CashDesks[rnd.Next(CashDesks.Count - 1)];
+                    var cash = CashDesks[rnd.Next(CashDesks.Count)];
                     cash.Enqueue(cart);
                 }
                 Thread.Sleep(sleep);
