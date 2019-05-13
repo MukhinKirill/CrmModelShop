@@ -14,6 +14,7 @@ namespace CrmUI
     public partial class ModelForm : Form
     {
         ShopComputerModel model = new ShopComputerModel();
+        List<CashBoxView> CashBoxes;
         public ModelForm()
         {
             InitializeComponent();
@@ -21,7 +22,7 @@ namespace CrmUI
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
-            var CashBoxes = new List<CashBoxView>();
+            CashBoxes = new List<CashBoxView>();
             for (int i = 0; i < model.CashDesks.Count; i++)
             {
                 var box = new CashBoxView(model.CashDesks[i], i, 10, 26 * i);
@@ -54,11 +55,6 @@ namespace CrmUI
         private void numericUpDown2_ValueChanged(object sender, EventArgs e)
         {
             model.CustomerSpeed = (int)numericUpDown2.Value;
-        }
-
-        private void ModelForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            model.Stop();
         }
     }
 }

@@ -13,6 +13,7 @@ namespace CrmBl.Model
 
         CancellationTokenSource cancellationTokenSource;
         CancellationToken token;
+        TaskFactory TaskFactory;
         List<Task> tasks = new List<Task>();
         public List<CashDesk> CashDesks { get; set; } = new List<CashDesk>();
         public List<Cart> Carts { get; set; } = new List<Cart>();
@@ -29,6 +30,7 @@ namespace CrmBl.Model
 
             cancellationTokenSource = new CancellationTokenSource();
             token = cancellationTokenSource.Token;
+            TaskFactory = new TaskFactory(token);
             foreach (var seller in sellers)
             {
                 Sellers.Enqueue(seller);
@@ -41,28 +43,32 @@ namespace CrmBl.Model
         //public async void Start()
         public void Start()
         {
-        
-
-
-            tasks.Add(Task.Run(() => CreateCarts(10, token)));
-            
+            //tasks.Add(Task.Run(() => CreateCarts(10, token)));
+            tasks.Add(Task.Factory.StartNew(() => CreateCarts(10, token)));
             //await Task.Run(() => CreateCarts(10,1000)); 
             // если будут await/async выполнение метода будет останавливаться  на данном этапе и ждать выполнения метода в отдельном аснхронном потоке
             //т.е. основной поток будет ждать выполнения Task'a
             // Пример: мб использовано при работе с графическим интерфейсом, чтобы форма не зависала на время ожидания работы порожденого потока
             // форма не будет активна, но и не будет висеть мертвым грузом
 
-            var cashDeskTasks = CashDesks.Select(c => new Task(() => CashDeskWork(c, token)));
-            foreach (var task in cashDeskTasks)
+            //var cashDeskTasks = CashDesks.Select(c => new Task(() => CashDeskWork(c, token)));
+            //foreach (var task in cashDeskTasks)
+            //{
+            //    task.Start();
+            //}
+            foreach (var cd in CashDesks)
             {
-                task.Start();
+                tasks.Add(Task.Factory.StartNew(() => CashDeskWork(cd, token)));
+
             }
-            tasks.AddRange(cashDeskTasks);
+           // tasks.AddRange(cashDeskTasks);
         }
 
         public void Stop()
         {
             cancellationTokenSource.Cancel();
+            Thread.Sleep(100);
+            var tmp = TaskFactory.CancellationToken;
         }
 
         private void CashDeskWork(CashDesk cashDesk, CancellationToken token)
