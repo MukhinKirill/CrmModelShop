@@ -133,9 +133,10 @@ namespace CrmUI
                     customer = form.Customer;
                 }
                 cart.Customer = customer;
+                linkLabel1.Text = "Здраствуй, " + customer.Name;
             }
 
-            linkLabel1.Text = "Здраствуй, " + customer.Name; 
+            
         }
 
         private void button1_Click(object sender, EventArgs e)

@@ -56,12 +56,14 @@ namespace CrmUI
 
         private void CashDesk_CheckClosed(object sender, Check e)//надо обновляться и обновляться в том же потоке
         {
-            Price.Invoke((Action)delegate
+
+            Price.BeginInvoke((Action)delegate
             {
                 Price.Value += e.Price;
                 QueueLenght.Value = cashDesk.Count;
                 LeaveCustomersCount.Text = cashDesk.ExitCustomer.ToString();
             });//конструкция позволяет пробросить действия в основной поток
+
         }
     }
 }

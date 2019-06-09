@@ -59,13 +59,13 @@ namespace CrmBl.Model
             foreach (var cd in CashDesks)
             {
                 tasks.Add(Task.Factory.StartNew(() => CashDeskWork(cd, token)));
-
             }
            // tasks.AddRange(cashDeskTasks);
         }
 
         public void Stop()
         {
+
             cancellationTokenSource.Cancel();
             Thread.Sleep(100);
             var tmp = TaskFactory.CancellationToken;
